@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "~/server/db";
 import { wakeDatabase } from "~/server/utils/awake";
 
+export const runtime = "edge";
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const authHeader = req.headers.authorization;
 
