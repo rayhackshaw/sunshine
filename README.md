@@ -1,28 +1,24 @@
-# Create T3 App
+# Isohel | Visualise the world's sunshine
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Web-application which plots world sunlight data and joins cities together that share the same amount (also known as an isohel). Updates daily with new data from OpenWeatherMap.
 
-## What's next? How do I make an app with this?
+Built using:
+ - [T3 Stack](https://create.t3.gg/)
+ - [Mapbox](https://www.mapbox.com/)
+ - [OpenWeatherMap](https://openweathermap.org/)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Inspiration
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Original inspiration for this comes from a song called '[isohel](https://www.youtube.com/watch?v=asuA2-pbch0)' by EDEN.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+The idea really resonated with me and I thought it would be cool to build something in homage to this.
 
-## Learn More
+## Calculations and Accuracy
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+Each city then gets a sunlight duration assigned to it via a simple subtraction of `sunset - sunrise`, 2 common data points returned from OpenWeatherMap.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Due to the nature of our method of calculation, 'true' isohels are actually close to/almost impossible to find without approximating our results.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+e.g. if Madrid has a sunlight duration of 52,756, and if Istanbul has a sunlight duration of 52,856 - they would not share an isohel if we leave them like this.
 
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Sunlight duration is rounded up as a measure to ensure this application isn't too accurate to the point where it is not showing any data at all.
