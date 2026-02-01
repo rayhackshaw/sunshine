@@ -1,0 +1,4 @@
+# Exclude large cache files from deployment
+cache/
+*.map
+*.gz

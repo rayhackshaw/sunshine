@@ -11,7 +11,11 @@
     "with-env": "dotenv -e ../../.env --",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "pages:build": "next build && node -e \"require('fs').rmSync('.next/cache', {recursive: true, force: true})\"",
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .next --project-name=sunshine",
+    "pages:dev": "wrangler pages dev .next -- npm run dev",
+    "wrangler": "wrangler"
   },
   "dependencies": {
     "@prisma/client": "^5.10.1",

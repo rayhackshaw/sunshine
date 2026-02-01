@@ -18,6 +18,11 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  // Disable image optimization for Cloudflare (can use Cloudflare Images instead)
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default config;

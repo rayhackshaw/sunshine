@@ -7,8 +7,6 @@ import {
 import { locationNames } from "~/utils/cities";
 import type { City, CityWithUrl, SunEntryDynamic } from "~/utils/interfaces";
 
-export const runtime = "edge";
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const authHeader = req.headers.authorization;
 

@@ -1,0 +1,5 @@
+name = "sunshine"
+compatibility_date = "2024-01-01"
+
+# Node.js compatibility for Prisma
+node_compat = true
