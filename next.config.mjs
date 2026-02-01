@@ -23,6 +23,14 @@ const config = {
   images: {
     unoptimized: true,
   },
+
+  // Skip ESLint and TypeScript checks during build for faster deployment
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default config;

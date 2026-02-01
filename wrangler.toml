@@ -1,5 +1,15 @@
 name = "sunshine"
 compatibility_date = "2024-01-01"
 
+# Pages-specific configuration
+pages_build_output_dir = ".next"
+
 # Node.js compatibility for Prisma
 node_compat = true
+
+# Build configuration
+[build]
+command = "npm run build"
+
+[build.environment]
+NODE_VERSION = "18"
