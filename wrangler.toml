@@ -6,10 +6,11 @@ name = "sunshine"
 compatibility_date = "2024-09-23"
 
 # Pages build output directory (created by opennextjs-cloudflare)
-pages_build_output_dir = ".open-next/assets"
+# This must point to the worker output, not just assets
+pages_build_output_dir = ".open-next"
 
 # Node.js compatibility for Prisma database client
-node_compat = true
+compatibility_flags = ["nodejs_compat"]
 
 # Build configuration for Cloudflare Pages
 [build]
