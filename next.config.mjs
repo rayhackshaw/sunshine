@@ -24,12 +24,12 @@ const config = {
     unoptimized: true,
   },
 
-  // Skip ESLint and TypeScript checks during build for faster deployment
+  // Enable ESLint and TypeScript checks during build for security
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 };
 

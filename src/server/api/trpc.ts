@@ -6,7 +6,7 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -44,8 +44,11 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
+  return {
+    ...createInnerTRPCContext({}),
+    req: opts.req,
+  };
 };
 
 /**
@@ -92,3 +95,31 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+/**
+ * Protected procedure that requires an API key
+ *
+ * This procedure enforces API key authentication via the Authorization header.
+ * Use this for any mutations or sensitive operations.
+ */
+const enforceApiKeyAuth = t.middleware(({ ctx, next }) => {
+  const authHeader = ctx.req.headers.authorization;
+
+  if (
+    !process.env.CRON_SECRET ||
+    authHeader !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Invalid or missing API key"
+    });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+    },
+  });
+});
+
+export const protectedProcedure = t.procedure.use(enforceApiKeyAuth);

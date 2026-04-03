@@ -17,10 +17,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await wakeDatabase(prisma);
 
     return res.status(200).json({
+      success: true,
       message: "Database queried.",
     });
   } catch (error) {
-    res.status(500).json({ error });
+    console.error("Error waking database:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to wake database"
+    });
   }
 };
 

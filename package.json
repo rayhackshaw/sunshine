@@ -11,6 +11,7 @@
     "with-env": "dotenv -e ../../.env --",
     "postinstall": "prisma generate",
     "lint": "next lint",
+    "type-check": "tsc --noEmit",
     "start": "next start",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",

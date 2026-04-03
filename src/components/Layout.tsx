@@ -6,10 +6,10 @@ import { useRouter } from "next/router";
 export const Layout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
 
-  const backlink = router.pathname.includes("about") ? "home" : "about";
+  const backlink = router.pathname.includes("about") ? "" : "about";
 
   return (
-    <main className="relative mx-auto flex min-h-screen w-full max-w-[1440px] flex-col overflow-y-auto font-wix">
+    <main className="relative mx-auto flex min-h-screen w-full flex-col overflow-y-auto font-wix">
       {children}
       <div className="absolute bottom-2 flex w-full items-center justify-between gap-2 px-4 text-xs md:text-lg">
         <div className="w-fit md:w-full">
@@ -43,7 +43,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
               </Link>
             </p>
           </div>
-          <Link href="https://github.com/Ray-Hackshaw/sunshine" target="_blank">
+          <Link href="https://github.com/rayhackshaw/sunshine" target="_blank">
             <GithubIcon width={28} height={28} />
           </Link>
         </div>

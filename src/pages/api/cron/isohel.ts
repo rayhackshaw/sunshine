@@ -17,6 +17,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).json({ success: false });
   }
 
+  if (!process.env.OPENWEATHERMAP_API_KEY) {
+    return res.status(500).json({
+      success: false,
+      error: "Server configuration error"
+    });
+  }
+
   try {
     const cityResponses: CityWithUrl[] = [];
     locationNames.forEach((city) => {
@@ -29,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       cityResponses.push({
         city,
-        url: `https://api.openweathermap.org/data/2.5/weather?q=${queryCity}&appid=20c8317a75161fafee1718a9ffd5f7b2&units=metric`,
+        url: `https://api.openweathermap.org/data/2.5/weather?q=${queryCity}&appid=${process.env.OPENWEATHERMAP_API_KEY}&units=metric`,
       });
     });
 
@@ -55,10 +62,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await updateSunlightPoints(sunlights, prisma);
 
     return res.status(200).json({
+      success: true,
       sunlights: sunlights,
     });
   } catch (error) {
-    res.status(500).json({ error });
+    console.error("Error updating sunlight data:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to update sunlight data"
+    });
   }
 };
 

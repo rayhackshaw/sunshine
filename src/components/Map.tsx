@@ -6,7 +6,15 @@ import type { Pairing } from "~/utils/interfaces";
 import { Latitude, Longitude } from "~/utils/cities";
 import { capitalize } from "~/server/utils/textFormat";
 
-export const Map = ({ points }: { points: Pairing[] }) => {
+export const Map = ({
+  points,
+  onMapReady,
+  highlightedCity,
+}: {
+  points: Pairing[];
+  onMapReady?: (map: mapboxgl.Map) => void;
+  highlightedCity?: string | null;
+}) => {
   const [map, setMap] = useState<mapboxgl.Map>();
   const [screenW, setScreenW] = useState<number>();
 
@@ -49,7 +57,9 @@ export const Map = ({ points }: { points: Pairing[] }) => {
 
         return {
           type: "Feature",
-          properties: {},
+          properties: {
+            cityPairId: isohel.firstCity,
+          },
           geometry: {
             type: "LineString",
             coordinates: [first, second],
@@ -131,13 +141,41 @@ export const Map = ({ points }: { points: Pairing[] }) => {
       });
 
       setMap(newMap);
-    }
-  }, [map, points, sunlights, screenW]);
 
-  return (
-    <div
-      id="map"
-      className="fade-in mx-auto flex h-[45vh] w-full items-center justify-center overflow-hidden rounded-md border-2 border-sun md:h-[90vh]"
-    />
-  );
+      if (onMapReady) {
+        onMapReady(newMap);
+      }
+    }
+  }, [map, points, sunlights, screenW, onMapReady]);
+
+  useEffect(() => {
+    if (!map || !map.getLayer("places")) return;
+
+    if (highlightedCity) {
+      map.setPaintProperty("places", "line-color", [
+        "case",
+        ["==", ["get", "cityPairId"], highlightedCity],
+        "#FF6B35",
+        "#FCA311",
+      ]);
+      map.setPaintProperty("places", "line-width", [
+        "case",
+        ["==", ["get", "cityPairId"], highlightedCity],
+        10, // Thicker for highlighted
+        7, // Normal width
+      ]);
+      map.setPaintProperty("places", "line-opacity", [
+        "case",
+        ["==", ["get", "cityPairId"], highlightedCity],
+        1,
+        0.5,
+      ]);
+    } else {
+      map.setPaintProperty("places", "line-color", "#FCA311");
+      map.setPaintProperty("places", "line-width", 7);
+      map.setPaintProperty("places", "line-opacity", 1);
+    }
+  }, [map, highlightedCity]);
+
+  return <div id="map" className="fade-in absolute inset-0 h-full w-full" />;
 };
