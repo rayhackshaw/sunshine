@@ -1,23 +1,29 @@
 # Cloudflare Pages Configuration for Sunshine App
-# Note: This project uses OpenNextJS adapter (see wrangler.jsonc for Worker config)
-# This file is primarily for reference and Pages CLI deployment
+# This project uses OpenNextJS Cloudflare adapter
+# Build happens on Cloudflare's infrastructure (not locally)
 
 name = "sunshine"
 compatibility_date = "2024-09-23"
 
-# Pages-specific configuration
-pages_build_output_dir = ".next"
+# Pages build output directory (created by opennextjs-cloudflare)
+pages_build_output_dir = ".open-next/assets"
 
 # Node.js compatibility for Prisma database client
 node_compat = true
 
-# Build configuration
+# Build configuration for Cloudflare Pages
 [build]
-command = "npm run build"
+command = "pnpm install && npx opennextjs-cloudflare build"
 
 [build.environment]
 NODE_VERSION = "18"
 
-# NOTE: Environment variables should be set via Cloudflare Dashboard or CLI
-# Required secrets: CRON_SECRET, OPENWEATHERMAP_API_KEY, POSTGRES_URL, etc.
-# See CLOUDFLARE_MIGRATION.md for complete list
+# NOTE: Environment variables must be set via Cloudflare Dashboard
+# Required secrets:
+# - CRON_SECRET (min 32 chars, for CRON authentication)
+# - OPENWEATHERMAP_API_KEY (from openweathermap.org)
+# - POSTGRES_URL (Neon PostgreSQL connection string)
+# - POSTGRES_PRISMA_URL (Neon pooled connection)
+# - POSTGRES_URL_NON_POOLING (Neon direct connection)
+# - NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN (Mapbox public token)
+# - NODE_ENV (set to "production")
