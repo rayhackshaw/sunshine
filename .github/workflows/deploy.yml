@@ -30,8 +30,17 @@ jobs:
 
       - name: Build and Deploy with OpenNextJS Cloudflare
         env:
+          # Cloudflare deployment credentials
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Application environment variables (needed for build-time validation)
+          NODE_ENV: production
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
+          POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+          NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN }}
         run: |
           pnpm run deploy
 
