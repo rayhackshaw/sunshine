@@ -41,12 +41,24 @@ jobs:
         run: |
           npx opennextjs-cloudflare build
 
+      - name: Temporarily rename wrangler.jsonc to avoid conflicts
+        run: |
+          if [ -f wrangler.jsonc ]; then mv wrangler.jsonc wrangler.jsonc.bak; fi
+
       - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy .open-next --project-name=sunshine
+
+      - name: Restore wrangler.jsonc
+        if: always()
+        run: |
+          if [ -f wrangler.jsonc.bak ]; then mv wrangler.jsonc.bak wrangler.jsonc; fi
 
       - name: Deployment Summary
         run: |
