@@ -1,0 +1,15 @@
+# Cloudflare Workers/Pages Local Development Variables
+# Copy this file to .dev.vars and fill in your values
+# This file is used by Wrangler for local development
+
+NODE_ENV=development
+
+# Database - Neon PostgreSQL
+POSTGRES_URL=postgresql://user:password@host:5432/database
+POSTGRES_PRISMA_URL=postgresql://user:password@host:5432/database?pgbouncer=true
+POSTGRES_URL_NON_POOLING=postgresql://user:password@host:5432/database
+
+# API Keys & Secrets
+CRON_SECRET=your_cron_secret_min_32_characters_here
+OPENWEATHERMAP_API_KEY=your_openweathermap_api_key_here
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=pk.your_mapbox_token_here

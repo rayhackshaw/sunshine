@@ -2,10 +2,54 @@
 
 Web-application which plots world sunlight data and joins cities together that share the same amount (also known as an isohel). Updates daily with new data from OpenWeatherMap.
 
+**Hosted on Cloudflare Pages** with secure API endpoints and automated data updates.
+
+## Tech Stack
+
 Built using:
- - [T3 Stack](https://create.t3.gg/)
- - [Mapbox](https://www.mapbox.com/)
- - [OpenWeatherMap](https://openweathermap.org/)
+ - [T3 Stack](https://create.t3.gg/) - Next.js, tRPC, Prisma, TypeScript
+ - [Mapbox GL JS](https://www.mapbox.com/) - Interactive mapping
+ - [OpenWeatherMap API](https://openweathermap.org/) - Real-time weather data
+ - [Cloudflare Pages](https://pages.cloudflare.com/) - Hosting & deployment
+ - [Neon PostgreSQL](https://neon.tech/) - Serverless database
+
+## Quick Start
+
+### Prerequisites
+- Node.js 18+
+- pnpm (`npm install -g pnpm`)
+- Database (Neon PostgreSQL recommended)
+- API keys (OpenWeatherMap, Mapbox)
+
+### Installation
+
+```bash
+# Clone repository
+git clone <repo-url>
+cd sunshine
+
+# Install dependencies
+pnpm install
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your credentials
+
+# Initialize database
+pnpm prisma generate
+pnpm prisma db push
+
+# Start development server
+pnpm dev
+```
+
+Visit `http://localhost:3000`
+
+## Documentation
+
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Complete deployment guide for Cloudflare Pages
+- **[SECURITY.md](SECURITY.md)** - Security features and best practices
+- **[CLOUDFLARE_MIGRATION.md](CLOUDFLARE_MIGRATION.md)** - Migration guide from Vercel
 
 ## Inspiration
 
