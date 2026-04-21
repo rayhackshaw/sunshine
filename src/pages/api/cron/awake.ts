@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "~/server/db";
+import { db } from "~/server/db";
 import { wakeDatabase } from "~/server/utils/awake";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     // wake database if sleeping
-    await wakeDatabase(prisma);
+    await wakeDatabase(db);
 
     return res.status(200).json({
       success: true,

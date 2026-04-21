@@ -1,5 +1,7 @@
-import type { PrismaClient } from "@prisma/client";
+import type { db } from "~/server/db";
 import type { SunEntryDynamic } from "~/utils/interfaces";
+import { eq } from "drizzle-orm";
+import { sunlight } from "~/server/db/schema";
 
 export const calculateSunlight = ({
   sunrise,
@@ -15,21 +17,14 @@ export const calculateSunlight = ({
 
 export const updateSunlightPoints = async (
   sunlights: SunEntryDynamic[],
-  prisma: PrismaClient
+  database: typeof db
 ) => {
   const data = sunlights.reduce((acc, curr) => {
     const key = Object.keys(curr)[0];
     const value = curr[key as string];
     acc[key as string] = value as number;
     return acc;
-  }, {});
+  }, {} as Record<string, number>);
 
-  await prisma.sunlight.update({
-    where: {
-      id: 1,
-    },
-    data: {
-      ...data,
-    },
-  });
+  await database.update(sunlight).set(data).where(eq(sunlight.id, 1));
 };

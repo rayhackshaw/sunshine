@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "~/server/db";
+import { db } from "~/server/db";
 import {
   calculateSunlight,
   updateSunlightPoints,
@@ -59,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     });
 
-    await updateSunlightPoints(sunlights, prisma);
+    await updateSunlightPoints(sunlights, db);
 
     return res.status(200).json({
       success: true,

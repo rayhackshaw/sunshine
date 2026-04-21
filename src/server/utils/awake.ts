@@ -1,12 +1,10 @@
-import type { PrismaClient } from "@prisma/client";
+import type { db } from "~/server/db";
+import { eq } from "drizzle-orm";
+import { sunlight } from "~/server/db/schema";
 
-export const wakeDatabase = async (prisma: PrismaClient) => {
+export const wakeDatabase = async (database: typeof db) => {
   try {
-    await prisma.sunlight.findFirst({
-      where: {
-        id: 1,
-      },
-    });
+    await database.select().from(sunlight).where(eq(sunlight.id, 1)).limit(1);
   } catch (e) {
     console.log(e);
   }

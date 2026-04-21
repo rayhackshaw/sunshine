@@ -6,6 +6,8 @@ import {
 import { z } from "zod";
 import { type inferProcedureOutput } from "@trpc/server";
 import { locationNames } from "~/utils/cities";
+import { eq } from "drizzle-orm";
+import { sunlight } from "~/server/db/schema";
 
 type RouterType = typeof isohelRouter;
 
@@ -19,11 +21,8 @@ const cityNameSchema = z.enum(validCityNames as [string, ...string[]]);
 
 export const isohelRouter = createTRPCRouter({
   getAllData: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.sunlight.findUnique({
-      where: {
-        id: 1,
-      },
-    });
+    const result = await ctx.db.select().from(sunlight).where(eq(sunlight.id, 1)).limit(1);
+    return result[0] ?? null;
   }),
   updatePoints: protectedProcedure
     .input(
@@ -52,12 +51,10 @@ export const isohelRouter = createTRPCRouter({
           }
         }
 
-        await ctx.prisma.sunlight.update({
-          where: {
-            id: 1,
-          },
-          data: updateData,
-        });
+        await ctx.db
+          .update(sunlight)
+          .set(updateData)
+          .where(eq(sunlight.id, 1));
 
         return { success: true, updated: Object.keys(updateData).length };
       }
