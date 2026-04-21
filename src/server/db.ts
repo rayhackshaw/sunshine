@@ -10,7 +10,7 @@ const globalForPrisma = globalThis as unknown as {
 // Configure Neon for Cloudflare Workers compatibility
 if (env.NODE_ENV === "development") {
   // In development, use ws for WebSocket
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-assignment
   neonConfig.webSocketConstructor = require("ws");
 }
 
@@ -21,7 +21,7 @@ const createPrismaClient = () => {
   const adapter = new PrismaNeon(pool);
 
   return new PrismaClient({
-    adapter: adapter as any, // Type workaround for Prisma adapter
+    adapter: adapter, // Type workaround for Prisma adapter
     log: env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
   });
 };
