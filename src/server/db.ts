@@ -21,7 +21,7 @@ const createPrismaClient = () => {
   const adapter = new PrismaNeon(pool);
 
   return new PrismaClient({
-    adapter: adapter, // Type workaround for Prisma adapter
+    adapter,
     log: env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
   });
 };
