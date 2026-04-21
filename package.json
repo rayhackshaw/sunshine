@@ -18,7 +18,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.2",
+    "@neondatabase/serverless": "0.10.2",
     "@opennextjs/cloudflare": "^1.16.0",
     "@prisma/adapter-neon": "^5.22.0",
     "@prisma/client": "^5.22.0",
@@ -29,7 +29,6 @@
     "@trpc/react-query": "^10.45.1",
     "@trpc/server": "^10.45.1",
     "@types/mapbox-gl": "^2.7.21",
-    "@vercel/postgres": "^0.8.0",
     "clsx": "^2.1.0",
     "dotenv-cli": "^7.3.0",
     "mapbox-gl": "^2.15.0",

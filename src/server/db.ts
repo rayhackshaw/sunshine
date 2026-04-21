@@ -1,23 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
-import { Pool, neonConfig } from "@neondatabase/serverless";
+import { Pool } from "@neondatabase/serverless";
 import { env } from "~/env.mjs";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Configure Neon for Cloudflare Workers compatibility
-if (env.NODE_ENV === "development") {
-  // In development, use ws for WebSocket
-  // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-assignment
-  neonConfig.webSocketConstructor = require("ws");
-}
-
 const createPrismaClient = () => {
   // Use Neon serverless adapter for Cloudflare Workers compatibility
-  const connectionString = env.POSTGRES_PRISMA_URL;
-  const pool = new Pool({ connectionString });
+  // Create a Pool instance and pass it to the PrismaNeon adapter
+  const pool = new Pool({ connectionString: env.POSTGRES_PRISMA_URL });
   const adapter = new PrismaNeon(pool);
 
   return new PrismaClient({
