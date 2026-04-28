@@ -32,8 +32,7 @@ jobs:
         env:
           # Application environment variables (needed for build-time validation)
           NODE_ENV: production
-          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
-          POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
+          POSTGRES_URL_POOLING: ${{ secrets.POSTGRES_URL_POOLING }}
           POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}

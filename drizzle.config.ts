@@ -6,6 +6,6 @@ export default {
   out: "./drizzle",
   dialect: "postgresql",
   dbCredentials: {
-    url: env.POSTGRES_PRISMA_URL,
+    url: env.POSTGRES_URL_POOLING,
   },
 } satisfies Config;

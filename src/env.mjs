@@ -5,8 +5,7 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
     // Database connection strings
-    POSTGRES_URL: z.string().url(),
-    POSTGRES_PRISMA_URL: z.string().url(),
+    POSTGRES_URL_POOLING: z.string().url(),
     POSTGRES_URL_NON_POOLING: z.string().url(),
     // API Keys and Secrets
     CRON_SECRET: z.string().min(32),
@@ -19,8 +18,7 @@ export const env = createEnv({
 
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    POSTGRES_URL: process.env.POSTGRES_URL,
-    POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL,
+    POSTGRES_URL_POOLING: process.env.POSTGRES_URL_POOLING,
     POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING,
     CRON_SECRET: process.env.CRON_SECRET,
     OPENWEATHERMAP_API_KEY: process.env.OPENWEATHERMAP_API_KEY,
