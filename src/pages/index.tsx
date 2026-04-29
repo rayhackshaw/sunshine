@@ -30,7 +30,7 @@ const UniqueCityList = ({
           onClick={() => onCityClick?.(x.firstCity)}
           onMouseEnter={() => onCityHover?.(x.firstCity)}
           onMouseLeave={() => onCityHover?.(null)}
-          className="flex cursor-pointer items-center justify-between gap-2 rounded-md border border-transparent bg-dark/30 p-3 transition-all hover:border-sun hover:bg-sun/10"
+          className="flex cursor-pointer items-center justify-between gap-2 border border-sun/20 bg-dark/30 p-3 transition-all hover:border-sun hover:bg-sun/10"
         >
           <div className="flex items-center gap-1.5 text-cloud/80">
             <Marker />

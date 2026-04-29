@@ -52,8 +52,37 @@ export const Map = ({
         const secondLong =
           Longitude[isohel.secondCity as keyof typeof Longitude];
 
-        const first = [firstLat, firstLong] as [number, number];
-        const second = [secondLat, secondLong] as [number, number];
+        const start = [firstLat as number, firstLong as number] as [
+          number,
+          number
+        ];
+        const end = [secondLat as number, secondLong as number] as [
+          number,
+          number
+        ];
+
+        const midX = (start[0] + end[0]) / 2;
+        const midY = (start[1] + end[1]) / 2;
+        const dx = end[0] - start[0];
+        const dy = end[1] - start[1];
+        const curvature = 0.05;
+        const controlX = midX + -dy * curvature;
+        const controlY = midY + dx * curvature;
+
+        const numPoints = 50;
+        const curveCoords: [number, number][] = [];
+        for (let i = 0; i <= numPoints; i++) {
+          const t = i / numPoints;
+          const x =
+            (1 - t) * (1 - t) * start[0] +
+            2 * (1 - t) * t * controlX +
+            t * t * end[0];
+          const y =
+            (1 - t) * (1 - t) * start[1] +
+            2 * (1 - t) * t * controlY +
+            t * t * end[1];
+          curveCoords.push([x, y]);
+        }
 
         return {
           type: "Feature",
@@ -62,32 +91,11 @@ export const Map = ({
           },
           geometry: {
             type: "LineString",
-            coordinates: [first, second],
+            coordinates: curveCoords,
           },
         };
       });
 
-      const allPoints = Object.entries(sunlights!)
-        .filter((x) => x[0] !== "id")
-        .map(([key, value]) => {
-          const lat = Latitude[key as keyof typeof Latitude] as number;
-          const long = Longitude[key as keyof typeof Longitude] as number;
-          return {
-            type: "Feature",
-            properties: {
-              description: `${capitalize(key)} (${value})`,
-            },
-            geometry: {
-              type: "Point",
-              coordinates: [lat, long],
-            },
-          };
-        });
-
-      const pointSet = {
-        type: "FeatureCollection",
-        features: allPoints,
-      };
       const dataSet = {
         type: "FeatureCollection",
         features: featureData,
@@ -98,46 +106,55 @@ export const Map = ({
           type: "geojson",
           data: dataSet as GeoJSON.FeatureCollection,
         });
-        newMap.addSource("points", {
-          type: "geojson",
-          data: pointSet as GeoJSON.FeatureCollection,
-        });
 
         newMap.addLayer({
-          id: `places`,
+          id: "places-border",
           type: "line",
-          source: `places`,
+          source: "places",
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#000000",
+            "line-width": 5,
+          },
+        });
+        newMap.addLayer({
+          id: "places",
+          type: "line",
+          source: "places",
           layout: {
             "line-join": "round",
             "line-cap": "round",
           },
           paint: {
             "line-color": "#FCA311",
-            "line-width": 7,
-            "line-blur": 2,
+            "line-width": 3,
           },
         });
-        newMap.addLayer({
-          id: "points",
-          type: "symbol",
-          source: "points",
-          layout: {
-            "text-field": ["get", "description"],
-            "text-variable-anchor": ["top", "bottom", "left", "right"],
-            "text-justify": "auto",
-            "icon-image": ["get", "icon"],
-            "text-size": 15,
-            "text-font": ["Arial Unicode MS Regular"],
-            "text-allow-overlap": true,
-            "text-ignore-placement": true,
-          },
-          paint: {
-            "text-color": "#fff",
-            "text-halo-color": "#000",
-            "text-halo-width": 2,
-            "text-halo-blur": 2,
-          },
-        });
+
+        Object.entries(sunlights!)
+          .filter((x) => x[0] !== "id")
+          .forEach(([key]) => {
+            const lat = Latitude[key as keyof typeof Latitude] as number;
+            const long = Longitude[key as keyof typeof Longitude] as number;
+
+            const el = document.createElement("div");
+            el.textContent = capitalize(key);
+            el.style.fontFamily = "var(--font-wix), sans-serif";
+            el.style.fontSize = "18px";
+            el.style.color = "#E5E5E5";
+            el.style.backgroundColor = "rgba(20, 33, 61, 0.85)";
+            el.style.padding = "4px 10px";
+            el.style.borderRadius = "6px";
+            el.style.pointerEvents = "none";
+            el.style.whiteSpace = "nowrap";
+
+            new mapboxgl.Marker({ element: el, anchor: "center" })
+              .setLngLat([lat, long])
+              .addTo(newMap);
+          });
       });
 
       setMap(newMap);
@@ -161,8 +178,8 @@ export const Map = ({
       map.setPaintProperty("places", "line-width", [
         "case",
         ["==", ["get", "cityPairId"], highlightedCity],
-        10, // Thicker for highlighted
-        7, // Normal width
+        5,
+        3,
       ]);
       map.setPaintProperty("places", "line-opacity", [
         "case",
@@ -170,10 +187,24 @@ export const Map = ({
         1,
         0.5,
       ]);
+      map.setPaintProperty("places-border", "line-width", [
+        "case",
+        ["==", ["get", "cityPairId"], highlightedCity],
+        8,
+        5,
+      ]);
+      map.setPaintProperty("places-border", "line-opacity", [
+        "case",
+        ["==", ["get", "cityPairId"], highlightedCity],
+        1,
+        0.5,
+      ]);
     } else {
       map.setPaintProperty("places", "line-color", "#FCA311");
-      map.setPaintProperty("places", "line-width", 7);
+      map.setPaintProperty("places", "line-width", 3);
       map.setPaintProperty("places", "line-opacity", 1);
+      map.setPaintProperty("places-border", "line-width", 5);
+      map.setPaintProperty("places-border", "line-opacity", 1);
     }
   }, [map, highlightedCity]);
 

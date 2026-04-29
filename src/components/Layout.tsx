@@ -11,42 +11,36 @@ export const Layout = ({ children }: PropsWithChildren) => {
   return (
     <main className="relative mx-auto flex min-h-screen w-full flex-col overflow-y-auto font-wix">
       {children}
-      <div className="absolute bottom-2 flex w-full items-center justify-between gap-2 px-4 text-xs md:text-lg">
-        <div className="w-fit md:w-full">
+      <div className="absolute bottom-3 right-4 z-10 flex items-center gap-4 text-xs text-cloud">
+        <Link
+          href={`/${backlink}`}
+          className="capitalize underline"
+        >
+          {backlink || "Home"}
+        </Link>
+        <span>
+          Made with{" "}
           <Link
-            href={`/${backlink}`}
-            className="capitalize text-cloud underline"
+            href="https://openweathermap.org/"
+            className="underline"
+            target="_blank"
           >
-            {backlink}
+            OpenWeatherMap
           </Link>
-        </div>
-        <div className="flex w-full items-center justify-between">
-          <div className="flex flex-col">
-            <p>
-              Made with{" "}
-              <Link
-                href="https://openweathermap.org/"
-                className="text-cloud underline"
-                target="_blank"
-              >
-                OpenWeatherMap
-              </Link>
-            </p>
-            <p>
-              Made With{" "}
-              <Link
-                href="https://www.mapbox.com/"
-                className="text-cloud underline"
-                target="_blank"
-              >
-                Mapbox
-              </Link>
-            </p>
-          </div>
-          <Link href="https://github.com/rayhackshaw/sunshine" target="_blank">
-            <GithubIcon width={28} height={28} />
+        </span>
+        <span>
+          Made with{" "}
+          <Link
+            href="https://www.mapbox.com/"
+            className="underline"
+            target="_blank"
+          >
+            Mapbox
           </Link>
-        </div>
+        </span>
+        <Link href="https://github.com/rayhackshaw/sunshine" target="_blank">
+          <GithubIcon width={20} height={20} />
+        </Link>
       </div>
     </main>
   );
