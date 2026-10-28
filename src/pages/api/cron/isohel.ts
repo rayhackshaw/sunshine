@@ -41,11 +41,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     });
 
-    const allResponsesWithData: City[] = (await Promise.all(
+    const allResponsesWithData: City[] = await Promise.all(
       cityResponses.map(async (x) => {
         return (await fetch(x.url)).json();
       })
-    )) as City[];
+    );
 
     const sunlights: SunEntryDynamic[] = [];
 
