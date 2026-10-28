@@ -35,6 +35,10 @@ jobs:
         run: |
           npx wrangler d1 migrations apply sunshine-db --remote
 
+      - name: Generate Cloudflare env types
+        run: |
+          npx wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts
+
       - name: Build with OpenNextJS Cloudflare
         env:
           NODE_ENV: production
