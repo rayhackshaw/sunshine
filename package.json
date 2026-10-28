@@ -5,9 +5,9 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "db:push": "pnpm with-env drizzle-kit push",
-    "db:studio": "pnpm with-env drizzle-kit studio",
-    "with-env": "dotenv -e ../../.env --",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply sunshine-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply sunshine-db --remote",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "start": "next start",
@@ -16,7 +16,6 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@neondatabase/serverless": "0.10.2",
     "@opennextjs/cloudflare": "^1.19.4",
     "@t3-oss/env-nextjs": "^0.3.1",
     "@tanstack/react-query": "^4.36.1",
@@ -26,7 +25,6 @@
     "@trpc/server": "^10.45.4",
     "@types/mapbox-gl": "^2.7.21",
     "clsx": "^2.1.1",
-    "dotenv-cli": "^7.3.0",
     "drizzle-orm": "^0.45.2",
     "mapbox-gl": "^2.15.0",
     "next": "^15.5.15",

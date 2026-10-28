@@ -1,13 +1,25 @@
 {
-  "name": "sunshine",
-  "main": ".open-next/worker.js",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  "compatibility_date": "2024-09-23",
-  "assets": {
-    "binding": "ASSETS",
-    "directory": ".open-next/assets"
-  },
-  "observability": {
-    "enabled": true
-  }
+	"name": "sunshine",
+	"main": ".open-next/worker.js",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"compatibility_date": "2024-09-23",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".open-next/assets"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "sunshine-db",
+			"database_id": "12266bc9-4b10-4e44-9960-58bfefed9516",
+			"migrations_dir": "drizzle",
+			"remote": true
+		}
+	],
+	"observability": {
+		"enabled": true
+	}
 }

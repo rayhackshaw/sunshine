@@ -1,11 +1,7 @@
 import type { Config } from "drizzle-kit";
-import { env } from "./src/env.mjs";
 
 export default {
   schema: "./src/server/db/schema.ts",
   out: "./drizzle",
-  dialect: "postgresql",
-  dbCredentials: {
-    url: env.POSTGRES_URL_POOLING,
-  },
+  dialect: "sqlite",
 } satisfies Config;

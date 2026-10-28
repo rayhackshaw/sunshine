@@ -1,7 +1,7 @@
-import { pgTable, serial, integer } from "drizzle-orm/pg-core";
+import { sqliteTable, integer } from "drizzle-orm/sqlite-core";
 
-export const sunlight = pgTable("sunlight", {
-  id: serial("id").primaryKey(),
+export const sunlight = sqliteTable("sunlight", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   auckland: integer("auckland").notNull(),
   brisbane: integer("brisbane").notNull(),
   melbourne: integer("melbourne").notNull(),

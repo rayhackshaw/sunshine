@@ -21,26 +21,12 @@ const cityNameSchema = z.enum(validCityNames as [string, ...string[]]);
 
 export const isohelRouter = createTRPCRouter({
   getAllData: publicProcedure.query(async ({ ctx }) => {
-    // Neon compute autosuspends on the free tier; the first request after idle
-    // can fail while the compute boots. Retry a couple of times before giving up.
-    const maxAttempts = 3;
-    let lastError: unknown;
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-      try {
-        const result = await ctx.db
-          .select()
-          .from(sunlight)
-          .where(eq(sunlight.id, 1))
-          .limit(1);
-        return result[0] ?? null;
-      } catch (error) {
-        lastError = error;
-        if (attempt < maxAttempts) {
-          await new Promise((resolve) => setTimeout(resolve, 500 * attempt));
-        }
-      }
-    }
-    throw lastError;
+    const result = await ctx.db
+      .select()
+      .from(sunlight)
+      .where(eq(sunlight.id, 1))
+      .limit(1);
+    return result[0] ?? null;
   }),
   updatePoints: protectedProcedure
     .input(

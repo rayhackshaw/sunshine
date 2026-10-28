@@ -43,6 +43,7 @@ yarn-error.log*
 .wrangler
 wrangler.toml.local
 .open-next
+cloudflare-env.d.ts
 
 # typescript
 *.tsbuildinfo

@@ -1,6 +1,5 @@
-import type { db } from "~/server/db";
+import type { DbClient } from "~/server/db";
 import type { SunEntryDynamic } from "~/utils/interfaces";
-import { eq } from "drizzle-orm";
 import { sunlight } from "~/server/db/schema";
 
 export const calculateSunlight = ({
@@ -17,7 +16,7 @@ export const calculateSunlight = ({
 
 export const updateSunlightPoints = async (
   sunlights: SunEntryDynamic[],
-  database: typeof db
+  database: DbClient
 ) => {
   const data = sunlights.reduce((acc, curr) => {
     const key = Object.keys(curr)[0];
@@ -26,5 +25,8 @@ export const updateSunlightPoints = async (
     return acc;
   }, {} as Record<string, number>);
 
-  await database.update(sunlight).set(data).where(eq(sunlight.id, 1));
+  await database
+    .insert(sunlight)
+    .values({ id: 1, ...data } as typeof sunlight.$inferInsert)
+    .onConflictDoUpdate({ target: sunlight.id, set: data });
 };

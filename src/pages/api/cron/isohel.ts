@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { db } from "~/server/db";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { createDb } from "~/server/db";
 import {
   calculateSunlight,
   updateSunlightPoints,
@@ -59,6 +60,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     });
 
+    const { env } = getCloudflareContext();
+    const db = createDb(env.DB);
     await updateSunlightPoints(sunlights, db);
 
     return res.status(200).json({
